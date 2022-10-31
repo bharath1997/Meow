@@ -1,9 +1,12 @@
-package com.example.meow.data.dto
+package com.example.meow.data.remote.dto
 
 data class Breed(
     val adaptability: Int,
     val affection_level: Int,
     val alt_names: String,
+    val bidability: Int,
+    val cat_friendly: Int,
+    val cfa_url: String,
     val child_friendly: Int,
     val country_code: String,
     val country_codes: String,
@@ -32,6 +35,8 @@ data class Breed(
     val stranger_friendly: Int,
     val suppressed_tail: Int,
     val temperament: String,
+    val vcahospitals_url: String,
+    val vetstreet_url: String,
     val vocalisation: Int,
     val weight: Weight,
     val wikipedia_url: String

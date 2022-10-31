@@ -1,4 +1,4 @@
-package com.example.meow.data.dto
+package com.example.meow.data.remote.dto
 
 data class Category(
     val id: Int,
