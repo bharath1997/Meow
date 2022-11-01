@@ -1,12 +1,11 @@
 package com.example.meow.data.repository
 
-import android.util.Log
 import com.example.meow.data.local.CatsDatabase
-import com.example.meow.data.local.CatsLocalDataSource
 import com.example.meow.data.mapper.toBreedInfo
 import com.example.meow.data.mapper.toCatsListingEntity
 import com.example.meow.data.remote.CatsApi
 import com.example.meow.domain.repository.CatsRepository
+import com.example.meow.util.BreedDetailsState
 import com.example.meow.util.CatsDataState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -22,38 +21,48 @@ import javax.inject.Singleton
 @Singleton
 class CatsRepositoryImpl @Inject constructor(
     private val api: CatsApi,
-    private val db: CatsDatabase,
-    private val catsLocalDataSource: CatsLocalDataSource
+    db: CatsDatabase,
 ) : CatsRepository {
-    val dao = db.dao
+    private val dao = db.dao
 
     override suspend fun getCatsListing(
-        fetchFromRemote: Boolean,
         query: String
     ): Flow<CatsDataState> {
         return flow {
             val localListings = dao.getAllBreeds()
-            emit(CatsDataState.Success(localListings.map {
-                it.toBreedInfo()
-            }))
-            val isDbEmpty = localListings.isEmpty() && query.isBlank()
+            val isDbEmpty = localListings.isEmpty()
+            if (!isDbEmpty) {
+                emit(CatsDataState.Success(localListings.map {
+                    it.toBreedInfo()
+                }))
+            }
             val remoteCatsListings = try {
                 api.getCatsList()
             } catch (e: IOException) {
-                emit(CatsDataState.Unknown)
+                    if (isDbEmpty) CatsDataState.Unknown
                 null
             } catch (e: HttpException) {
-                emit(CatsDataState.Unknown)
+                if (isDbEmpty) CatsDataState.Unknown
                 null
             }
-            Log.d("CatsRepository", remoteCatsListings.toString())
             remoteCatsListings?.let { catsListing ->
                 dao.clearCatsListings()
                 dao.insertCatsListings(catsListing.map { it.toCatsListingEntity() })
-                emit(CatsDataState.Success(dao.searchCatsListing("").map {
+                emit(CatsDataState.Success(dao.getAllBreeds().map {
                     it.toBreedInfo()
                 }))
 
+            }
+        }
+    }
+
+    override suspend fun getBreed(id: String): Flow<BreedDetailsState> {
+        return flow {
+            val breedDetails = dao.getBreed(id).toBreedInfo()
+            if (breedDetails.id.isNotEmpty()) {
+                emit(BreedDetailsState.Success(breedDetails))
+            } else {
+                emit(BreedDetailsState.Unknown)
             }
         }
     }

@@ -4,12 +4,14 @@ import com.example.meow.data.local.CatsListingEntity
 import com.example.meow.data.local.Ratings
 import com.example.meow.data.remote.dto.CatBreedsResponseItem
 import com.example.meow.domain.model.BreedInfo
+import com.example.meow.domain.model.RatingsUI
 
 /**
  * Created by Bharath on 10/29/2022.
  */
 
 fun CatBreedsResponseItem.toCatsListingEntity(): CatsListingEntity {
+    val tempId = 999
     val petBreed = if (!breeds.isNullOrEmpty()) {
         breeds[0]
     } else {
@@ -17,8 +19,8 @@ fun CatBreedsResponseItem.toCatsListingEntity(): CatsListingEntity {
     }
     return CatsListingEntity(
         breedName = petBreed?.name ?: "",
-        id = id,
-        imageUrl = url,
+        id = id ?: (tempId.toString()).also { tempId + 1 },
+        imageUrl = url ?: "",
         breeId = petBreed?.id ?: "",
         origin = petBreed?.origin ?: "",
         nature = petBreed?.temperament ?: "",
@@ -47,8 +49,31 @@ fun CatBreedsResponseItem.toCatsListingEntity(): CatsListingEntity {
     )
 }
 
+fun getRatingsList(ratings: Ratings) = listOf(
+    RatingsUI("Indoor", (ratings.indoor * 20).div(100f)),
+    RatingsUI("lap", (ratings.lap * 20).div(100f)),
+    RatingsUI("Adaptability", (ratings.adaptability * 20).div(100f)),
+    RatingsUI("Affection Level", (ratings.affectionLevel * 20).div(100f)),
+    RatingsUI("Child Friendly", (ratings.childFriendly * 20).div(100f)),
+    RatingsUI("Dog Friendly", (ratings.dogFriendly * 20).div(100f)),
+    RatingsUI("Energy Level", (ratings.energyLevel * 20).div(100f)),
+    RatingsUI("Grooming", (ratings.grooming * 20).div(100f)),
+    RatingsUI("Health Issues", (ratings.healthIssues * 20).div(100f)),
+    RatingsUI("Intelligence", (ratings.intelligence * 20).div(100f)),
+    RatingsUI("Shedding Level", (ratings.sheddingLevel * 20).div(100f)),
+    RatingsUI("Social Needs", (ratings.socialNeeds * 20).div(100f)),
+    RatingsUI("Stranger Friendly", (ratings.strangerFriendly * 20).div(100f)),
+    RatingsUI("Vocalization", (ratings.vocalization * 20).div(100f)),
+    RatingsUI("Experimental", (ratings.experimental * 20).div(100f)),
+    RatingsUI("Natural", (ratings.natural * 20).div(100f)),
+    RatingsUI("Rare", (ratings.rare * 20).div(100f))
+)
+
 fun CatsListingEntity.toBreedInfo(): BreedInfo {
+
+
     return BreedInfo(
+        id = id,
         breedName = breedName,
         imageUrl = imageUrl,
         origin = origin,
@@ -56,7 +81,7 @@ fun CatsListingEntity.toBreedInfo(): BreedInfo {
         description = description,
         lifeSpan = lifeSpan,
         alternativeNames = alternativeNames,
-        ratings = ratings
+        ratings = getRatingsList(ratings).sortedByDescending { it.percentage }
 
     )
 }

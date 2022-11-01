@@ -3,6 +3,7 @@ package com.example.meow.domain.model
 import com.example.meow.data.local.Ratings
 
 data class BreedInfo(
+    val id: String,
     val breedName: String,
     val imageUrl: String,
     val origin: String,
@@ -10,5 +11,6 @@ data class BreedInfo(
     val description: String,
     val lifeSpan: String,
     val alternativeNames: String,
-    val ratings: Ratings,
+//    val ratings: Ratings,
+    val ratings: List<RatingsUI>,
 )

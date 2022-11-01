@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.meow.domain.repository.CatsRepository
 import com.example.meow.util.CatsDataState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,12 +22,11 @@ class CatsListingViewModel @Inject constructor(private val repository: CatsRepos
         getCatsListing()
     }
 
-    private fun getCatsListing(
+    internal fun getCatsListing(
         query: String = "",
-        fetchFromRemote: Boolean = false
     ) {
         viewModelScope.launch {
-            uiState = repository.getCatsListing(fetchFromRemote, query).stateIn(
+            uiState = repository.getCatsListing(query).stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = CatsDataState.Loading

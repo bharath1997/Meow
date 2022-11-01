@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Meow</string>
+    <string name="origin">Origin</string>
+    <string name="lifespan">LifeSpan in Years</string>
+    <string name="nature">Nature</string>
+    <string name="ratings">Ratings</string>
+    <string name="synchronizing">Getting latest cat breeds</string>
+    <string name="synchronizing_error">Error getting latest cat breeds</string>
+    <string name="error">Unable to get your cats</string>
+    <string name="try_again">Try again</string>
+    <string name="indoor">Indoor</string>
+    <string name="lap">Lap</string>
+    <string name="adaptability">Adaptability</string>
+    <string name="affectionLevel">Affection Level</string>
+    <string name="childFriendly">Child Friendly</string>
+    <string name="dogFriendly">Dog Friendly</string>
+    <string name="energyLevel">Energy Level</string>
+    <string name="grooming">Grooming</string>
+    <string name="healthIssues">Health Issues</string>
+    <string name="intelligence">Intelligence</string>
+    <string name="sheddingLevel">Shedding Level</string>
+    <string name="socialNeeds">Social Needs</string>
+    <string name="strangerFriendly">Stranger Friendly</string>
+    <string name="vocalization">Vocalization</string>
+    <string name="experimental">Experimental</string>
+    <string name="natural">Natural</string>
+    <string name="rare">Rare</string>
 </resources>

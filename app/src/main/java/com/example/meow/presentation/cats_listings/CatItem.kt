@@ -12,6 +12,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import coil.ImageLoader
@@ -19,10 +22,11 @@ import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
-import com.example.meow.data.local.Ratings
+import com.example.meow.R
 import com.example.meow.domain.model.BreedInfo
 import com.example.meow.ui.theme.MeowTheme
 import com.example.meow.util.DevicePreviews
+import com.example.meow.util.sampleBreedInfo
 
 /**
  * Created by Bharath on 10/29/2022.
@@ -31,7 +35,11 @@ import com.example.meow.util.DevicePreviews
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CatItemComposable(breedInfo: BreedInfo, modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun CatItemComposable(
+    breedInfo: BreedInfo,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit
+) {
     ConstraintLayout(
         modifier = modifier
             .fillMaxWidth()
@@ -50,18 +58,21 @@ fun CatItemComposable(breedInfo: BreedInfo, modifier: Modifier = Modifier, onCli
                 .wrapContentSize()
                 .clip(RoundedCornerShape(4.dp))
                 .padding(16.dp),
-            onClick = onClick
+            onClick = { onClick.invoke(breedInfo.id) }
         ) {
             ConstraintLayout(
                 modifier = modifier
                     .fillMaxSize()
                     .background(color = Color.Transparent)
             ) {
+
                 val (cardTitle, nature, origin, lifespan) = createRefs()
+
                 CatText(modifier = modifier.constrainAs(cardTitle) {
                     start.linkTo(parent.start, 108.dp)
                     top.linkTo(parent.top, 16.dp)
-                }, breedInfo.breedName)
+                }, breedInfo.breedName, MaterialTheme.typography.titleLarge)
+
                 CatDataWithLabelTemplate(modifier = modifier
                     .constrainAs(nature) {
                         start.linkTo(parent.start, 45.dp)
@@ -69,15 +80,17 @@ fun CatItemComposable(breedInfo: BreedInfo, modifier: Modifier = Modifier, onCli
                         top.linkTo(origin.bottom, 16.dp)
                         bottom.linkTo(parent.bottom, 16.dp)
                     }
-                    .fillMaxWidth(), label = "Nature: ", breedInfo.nature)
+                    .fillMaxWidth(), label = "${stringResource(R.string.nature)}: ", breedInfo.nature)
+
                 CatDataWithLabelTemplate(modifier = modifier.constrainAs(origin) {
                     start.linkTo(cardTitle.start)
                     top.linkTo(cardTitle.bottom, 16.dp)
-                }, label = "Origin: ", breedInfo.origin)
+                }, label = "${stringResource(R.string.origin)}: ", breedInfo.origin)
+
                 CatDataWithLabelTemplate(modifier = modifier.constrainAs(lifespan) {
                     start.linkTo(origin.end, 16.dp)
                     top.linkTo(cardTitle.bottom, 16.dp)
-                }, label = "LifeSpan in years: ", breedInfo.lifeSpan)
+                }, label = "${stringResource(R.string.lifespan)}: ", breedInfo.lifeSpan)
             }
         }
 
@@ -86,13 +99,14 @@ fun CatItemComposable(breedInfo: BreedInfo, modifier: Modifier = Modifier, onCli
                 start.linkTo(card.start, 24.dp)
                 bottom.linkTo(topGuideline)
             }
-            .wrapContentSize(), breedInfo.imageUrl)
+            .wrapContentSize(), breedInfo.imageUrl, 86.dp)
     }
 }
 
 @Composable
 fun CatIcon(
     imageUrl: String,
+    size: Dp,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -117,27 +131,27 @@ fun CatIcon(
         contentDescription = "cat breed image",
         modifier = modifier
             .clip(CircleShape)
-            .size(86.dp)
+            .size(size)
     )
 }
 
 @Composable
-fun CatPictureComposable(modifier: Modifier = Modifier, imageUrl: String) {
+fun CatPictureComposable(modifier: Modifier = Modifier, imageUrl: String, size: Dp) {
     ElevatedCard(
         shape = CircleShape,
         colors = CardDefaults.elevatedCardColors(containerColor = Color.White),
         modifier = modifier
     ) {
-        CatIcon(imageUrl)
+        CatIcon(imageUrl, size)
     }
 }
 
 @Composable
-fun CatText(modifier: Modifier = Modifier, breedName: String?) {
+fun CatText(modifier: Modifier = Modifier, text: String?, textStyle: TextStyle) {
     Text(
-        text = breedName ?: "",
+        text = text ?: "",
         modifier = modifier,
-        style = MaterialTheme.typography.titleLarge
+        style = textStyle
     )
 }
 
@@ -157,34 +171,7 @@ fun CatIcon() {
     BoxWithConstraints {
         MeowTheme {
             CatItemComposable(
-                BreedInfo(
-                    breedName = "Test",
-                    imageUrl = "https://cdn2.thecatapi.com/images/KWdLHmOqc.jpg",
-                    origin = "India",
-                    nature = "Test",
-                    description = "Test shdjhsjdhf shdfkjshdkfjsh hskjdhfkjsh",
-                    lifeSpan = "10",
-                    alternativeNames = "Test test, sets",
-                    ratings = Ratings(
-                        indoor = 0,
-                        lap = 0,
-                        adaptability = 0,
-                        affectionLevel = 0,
-                        childFriendly = 0,
-                        dogFriendly = 0,
-                        energyLevel = 0,
-                        grooming = 0,
-                        healthIssues = 0,
-                        intelligence = 0,
-                        sheddingLevel = 0,
-                        socialNeeds = 0,
-                        strangerFriendly = 0,
-                        vocalization = 0,
-                        experimental = 0,
-                        natural = 0,
-                        rare = 0
-                    )
-                )
+                sampleBreedInfo
             ) {}
         }
 

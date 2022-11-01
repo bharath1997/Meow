@@ -21,7 +21,10 @@ interface CatsDao {
     suspend fun clearCatsListings()
 
     @Query("SELECT * FROM catslistingentity")
-    suspend fun getAllBreeds():List<CatsListingEntity>
+    suspend fun getAllBreeds(): List<CatsListingEntity>
+
+    @Query("SELECT * FROM catslistingentity WHERE id = :identifier")
+    suspend fun getBreed(identifier: String): CatsListingEntity
 
     @Query(
         """
