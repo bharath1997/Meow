@@ -42,8 +42,7 @@ fun CatsListingScreen(
         }) { paddingValues ->
         CatsListStateless(
             modifier = Modifier.padding(paddingValues),
-            catsListingsState = catsListingsState,
-            tryAgain = viewModel::getCatsListing,
+            catsListingsState = catsListingsState
         ) { id ->
             navigator.navigate(CatDetailsScreenDestination(id = id))
         }

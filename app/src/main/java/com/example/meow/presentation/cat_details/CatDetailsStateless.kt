@@ -41,7 +41,6 @@ import kotlin.math.min
 fun CatDetailsStateLess(
     breedDetailsState: BreedDetailsState,
     modifier: Modifier = Modifier,
-    tryAgain:()->Unit = {},
     onUpClicked: () -> Unit,
 ) {
     when (breedDetailsState) {
@@ -53,7 +52,7 @@ fun CatDetailsStateLess(
         }
         BreedDetailsState.Unknown
         -> {
-            UnknownErrorComposable(tryAgain)
+            UnknownErrorComposable()
         }
     }
 }

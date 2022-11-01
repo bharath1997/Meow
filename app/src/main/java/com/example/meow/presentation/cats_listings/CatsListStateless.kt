@@ -32,7 +32,6 @@ import com.example.meow.util.sampleBreedInfo
 fun CatsListStateless(
     catsListingsState: CatsDataState,
     modifier: Modifier = Modifier,
-    tryAgain: () -> Unit = {},
     onClickItem: (String) -> Unit
 ) {
     Log.d("CatsListStateless", "State $catsListingsState")
@@ -45,9 +44,10 @@ fun CatsListStateless(
             }
         }
         CatsDataState.Unknown -> {
-            UnknownErrorComposable(tryAgain)
+            UnknownErrorComposable()
         }
-        CatsDataState.Loading -> {Loader()
+        CatsDataState.Loading -> {
+            Loader()
         }
     }
 
@@ -55,7 +55,7 @@ fun CatsListStateless(
 
 
 @Composable
-fun UnknownErrorComposable(tryAgain: () -> Unit) {
+fun UnknownErrorComposable() {
     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -67,9 +67,6 @@ fun UnknownErrorComposable(tryAgain: () -> Unit) {
                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.error)
             )
             Text(text = stringResource(id = R.string.error))
-            Button(onClick = tryAgain) {
-                Text(text = stringResource(id = R.string.try_again))
-            }
         }
     }
 }
