@@ -3,7 +3,6 @@ package com.example.meow.presentation.cat_details
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -38,7 +37,7 @@ import kotlin.math.min
  */
 
 @Composable
-fun CatDetailsStateLess(
+fun CatDetails(
     breedDetailsState: BreedDetailsState,
     modifier: Modifier = Modifier,
     onUpClicked: () -> Unit,
@@ -48,7 +47,7 @@ fun CatDetailsStateLess(
             Loader()
         }
         is BreedDetailsState.Success -> {
-            DetailsScreen(breedDetailsState.breedInfo, onUpClicked = onUpClicked)
+            CatDetailsScreen(breedDetailsState.breedInfo, onUpClicked = onUpClicked)
         }
         BreedDetailsState.Unknown
         -> {
@@ -57,8 +56,9 @@ fun CatDetailsStateLess(
     }
 }
 
+//stateless
 @Composable
-fun DetailsScreen(breedInfo: BreedInfo, modifier: Modifier = Modifier, onUpClicked: () -> Unit) {
+fun CatDetailsScreen(breedInfo: BreedInfo, modifier: Modifier = Modifier, onUpClicked: () -> Unit) {
     val scrollState = rememberScrollState()
     val offset = min(
         1f,

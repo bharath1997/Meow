@@ -14,6 +14,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
  * Created by Bharath on 10/31/2022.
  */
 
+//stateful composable
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Destination
 @Composable
@@ -23,7 +24,7 @@ fun CatDetailsScreen(
     viewModel: CatDetailsViewModel = hiltViewModel()
 ) {
     val breedDetailsState by viewModel.uiState.collectAsStateWithLifecycle()
-    CatDetailsStateLess(
+    CatDetails(
         breedDetailsState,
         modifier = Modifier.fillMaxSize()
     ) { navigator.popBackStack() }

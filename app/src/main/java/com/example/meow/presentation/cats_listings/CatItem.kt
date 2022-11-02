@@ -123,7 +123,7 @@ fun CatIcon(
     }
     AsyncImage(
         placeholder = rememberAsyncImagePainter(
-            model = com.example.meow.R.drawable.catrunning,
+            model = R.drawable.catrunning,
             imageLoader = imageLoader
         ),
         model = imageUrl,

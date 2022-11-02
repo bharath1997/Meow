@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import com.example.meow.R
+import com.example.meow.domain.model.BreedInfo
 import com.example.meow.ui.theme.MeowTheme
 import com.example.meow.util.CatsDataState
 import com.example.meow.util.DevicePreviews
@@ -29,7 +29,7 @@ import com.example.meow.util.sampleBreedInfo
  * Created by Bharath on 10/30/2022.
  */
 @Composable
-fun CatsListStateless(
+fun CatsList(
     catsListingsState: CatsDataState,
     modifier: Modifier = Modifier,
     onClickItem: (String) -> Unit
@@ -37,11 +37,7 @@ fun CatsListStateless(
     Log.d("CatsListStateless", "State $catsListingsState")
     when (catsListingsState) {
         is CatsDataState.Success -> {
-            LazyColumn(modifier = modifier) {
-                items(catsListingsState.catsList) {
-                    CatItemComposable(breedInfo = it, onClick = onClickItem)
-                }
-            }
+            CatsListingScreen(modifier, catsListingsState.catsList, onClickItem)
         }
         CatsDataState.Unknown -> {
             UnknownErrorComposable()
@@ -51,6 +47,21 @@ fun CatsListStateless(
         }
     }
 
+}
+
+
+//stateless
+@Composable
+fun CatsListingScreen(
+    modifier: Modifier = Modifier,
+    breeds: List<BreedInfo>,
+    onClickItem: (String) -> Unit
+) {
+    LazyColumn(modifier = modifier) {
+        items(breeds) {
+            CatItemComposable(breedInfo = it, onClick = onClickItem)
+        }
+    }
 }
 
 
@@ -75,12 +86,14 @@ fun UnknownErrorComposable() {
 @Composable
 fun CatsListStatelessPreview() {
     MeowTheme {
-        CatsListStateless(
-            catsListingsState = CatsDataState.Success(
-                listOf(
-                    sampleBreedInfo
-                )
+        CatsListingScreen(
+            breeds =
+            listOf(
+                sampleBreedInfo,
+                sampleBreedInfo,
+                sampleBreedInfo
             )
+
         ) {}
     }
 }
