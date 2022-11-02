@@ -49,7 +49,7 @@ fun CatBreedsResponseItem.toCatsListingEntity(): CatsListingEntity {
     )
 }
 
-fun getRatingsList(ratings: Ratings) = listOf(
+val ratingsList = fun(ratings: Ratings) = listOf(
     RatingsUI("Indoor", (ratings.indoor * 20).div(100f)),
     RatingsUI("lap", (ratings.lap * 20).div(100f)),
     RatingsUI("Adaptability", (ratings.adaptability * 20).div(100f)),
@@ -81,7 +81,7 @@ fun CatsListingEntity.toBreedInfo(): BreedInfo {
         description = description,
         lifeSpan = lifeSpan,
         alternativeNames = alternativeNames,
-        ratings = getRatingsList(ratings).sortedByDescending { it.percentage }
+        ratings = ratingsList(ratings).sortedByDescending { it.percentage }
 
     )
 }

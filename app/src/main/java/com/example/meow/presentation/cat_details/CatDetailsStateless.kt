@@ -117,7 +117,7 @@ fun CatDetailsScreen(breedInfo: BreedInfo, modifier: Modifier = Modifier, onUpCl
         }
 
         CatDataWithLabelTemplate(
-            modifier = modifier.padding(8.dp),
+            modifier = modifier.padding(16.dp),
             label = "${stringResource(R.string.nature)}: ",
             data = breedInfo.nature
         )
