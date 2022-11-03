@@ -22,7 +22,7 @@ class CatsListingViewModel @Inject constructor(private val repository: CatsRepos
         getCatsListing()
     }
 
-    internal fun getCatsListing(
+    private fun getCatsListing(
         query: String = "",
     ) {
         viewModelScope.launch {

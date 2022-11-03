@@ -39,10 +39,10 @@ class CatsRepositoryImpl @Inject constructor(
             val remoteCatsListings = try {
                 api.getCatsList()
             } catch (e: IOException) {
-                    if (isDbEmpty) CatsDataState.Unknown
+                    if (isDbEmpty) emit(CatsDataState.Unknown)
                 null
             } catch (e: HttpException) {
-                if (isDbEmpty) CatsDataState.Unknown
+                if (isDbEmpty) emit(CatsDataState.Unknown)
                 null
             }
             remoteCatsListings?.let { catsListing ->
